@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Register
+{% endblock %}
+
+{% block body %}
+<div class="accounts">
+    <form action="/register" method="post">
+        <h3>Register</h3>
+        <p class="error">{{ request.args.get("error", "") }}</p>
+        <br>
+        <input class="form-control" type="text" name="username" placeholder="Username" autofocus autocomplete="off" required>
+        <br>
+        <input class="form-control" type="password" name="password" placeholder="Password" required>
+        <br>
+        <input class="form-control" type="password" name="confirmation" placeholder="Password Confirmation" required>
+        <br>
+        <input class="form-control" type="submit" value="Register">
+    </form>
+</div>
+{% endblock %}

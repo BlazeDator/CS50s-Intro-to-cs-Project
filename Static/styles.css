@@ -1,0 +1,131 @@
+body
+{
+    background-color:#ebebeb;
+    margin-bottom:1.5rem;
+}
+footer
+{
+    position:fixed;
+    bottom:0;
+    width:100%;
+    color:white;
+    text-align:center;
+}
+p.error
+{
+    color:red;
+    padding:5px;
+}
+div.bline
+{
+    display:flex;
+    justify-content:space-evenly;
+    flex-wrap: wrap;
+}
+div.accounts
+{
+    padding-top:5%;
+    display:flex;
+    justify-content:center;
+}
+.bline > *
+{
+    padding:15px;
+}
+div.store
+{
+    display:flex;
+    justify-content:center;
+    flex-wrap: wrap;
+}
+div.storeprice
+{
+    display:flex;
+    justify-content: space-between;
+}
+.storeprice > div
+{
+    padding:10px;
+}
+div.store > div.card
+{
+    margin:5px;
+}
+
+a.nav-link
+{
+    color:white;
+    padding:10px;
+    padding-left:30px;
+    padding-right:30px;
+
+}
+a.nav-link.btn:visited
+{
+    color:white;
+}
+a.nav-link.btn:hover
+{
+    color:white;
+}
+
+a.nabar-brand.btn
+{
+    min-width:10vw;
+}
+a.navbar-brand.btn:hover
+{
+    color:white;
+}
+
+
+
+a.storelink:link
+{
+    color: black;
+    text-decoration:none;
+}
+a.storelink:visited
+{
+    color: black;
+}
+a.storelink:hover
+{
+    color:blue;
+}
+
+tr.cart > *
+{
+    vertical-align: baseline;
+}
+tr.cart > td > a > img
+{
+    max-height:96px;
+}
+
+
+div.item
+{
+    display:flex;
+    justify-content:center;
+    flex-wrap: wrap;
+    margin-left:1.5vw;
+    margin-right:1.5vw;
+}
+img.img-thumbnail.item
+{
+    max-width:32vw;
+}
+
+iframe
+{
+
+    /*This width and height is calculation to get a 16:9 ratio out of the viewport dimensions*/
+    width:65vw;
+    height:36.56vw;
+    /*This is about centering the video*/
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top:25px;
+}

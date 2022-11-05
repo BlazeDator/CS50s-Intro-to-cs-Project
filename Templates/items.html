@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    BlazePC
+{% endblock %}
+
+{% block body %}
+<script>
+    // Code based on Lecture 9 https://cs50.harvard.edu/x/2022/notes/9/#searching
+    async function firstRender()
+    {
+        let r = await fetch('/search?q=');
+        let i = await r.text();
+        document.querySelector('div.store').innerHTML = i;
+    }
+    firstRender();
+
+    let input = document.querySelector('input');
+
+    input.addEventListener('keyup', async function(event) {
+        if (event.keyCode === 13 || input.value == "")
+        {
+            let response = await fetch('/search?q=' + input.value);
+            let items = await response.text();
+            document.querySelector('div.store').innerHTML = items;
+        }
+    });
+
+</script>
+<div class="store">
+
+</div>
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    BackOffice - Item Delete
+{% endblock %}
+
+{% block body %}
+    {{ request.args.get("error", "") }}
+    <div class="bline"><a href="/backoffice" class="link btn" style="padding:10px;">Back to main BackOffice page</a></div>
+    <hr>
+    <div>
+        <h4>Select an item to delete</h4>
+        <table class="table">
+        {% for item in items %}
+            <form action="/backoffice/deleteitems" method="post">
+                <tr>
+                    <td>Name: {{ item["name"] }}</td>
+                    <input type="number" name=itemid value='{{ item["id"] }}' hidden>
+                    <td><input class="form-control" type=submit value=Delete></td>
+                </tr>
+            </form>
+        {% endfor %}
+        </table>
+    </div>
+{% endblock %}

@@ -1,0 +1,68 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    BackOffice - Images
+{% endblock %}
+
+{% block body %}
+    {{ request.args.get("error", "") }}
+    <div class="bline"><a href="/backoffice" class="link btn" style="padding:10px;">Back to main BackOffice page</a></div>
+    <hr>
+    <div class="bline">
+        <div>
+            <h4>Select an item to manage images</h4>
+            <table class="table">
+            {% for item in items %}
+                    <form action="/backoffice/images" method="get">
+                        <tr>
+                            <td>Name: {{ item["name"] }}</td>
+                            <input type="number" name=itemid value='{{ item["id"] }}' hidden>
+                            <input type="text" name=itemname value='{{ item["name"] }}' hidden>
+                            <td><input class="form-control" type=submit value=Select></td>
+                        </tr>
+                    </form>
+            {% endfor %}
+            </table>
+        </div>
+        <div>
+            <h5>Item Selected: {{ itemname }}</h5>
+            <table>
+            {% if itemid %}
+                {% for i in range(1,4,1) %}
+                <tr>
+                    <form action="/backoffice/images/delete" method="post">
+                    <input type="number" name=itemid value='{{ request.args.get("itemid") }}' hidden>
+                    <input type="text" name=itemname value='{{ request.args.get("itemname") }}' hidden>
+                    <input type="number" name=imagenum value='{{ i }}' hidden>
+                    <td>Image{{i}}:</td>
+                    <td><img src='/static/prodimgs/{{ itemid }}-img{{i}}.png' style="max-width:192px;" alt="Image Unavailable" onerror="this.style.display='none'"></td>
+                    <td><input class="form-control" type="submit" value="Delete"></td>
+                    </form>
+                </tr>
+                {% endfor %}
+             {% endif %}
+
+            </table>
+        </div>
+        <div>
+            <h5>Upload Image:</h5>
+            {% if itemid %}
+            <form action="/backoffice/images" method="post" enctype=multipart/form-data>
+                <input type="number" name=itemid value='{{ request.args.get("itemid") }}' hidden>
+                <input type="text" name=itemname value='{{ request.args.get("itemname") }}' hidden>
+                <br>
+                <input type="number" name= itemid value='{{ itemid }}' hidden>
+                Image 1: <input class="form-control" type=file name=file1>
+                <br>
+                Image 2: <input class="form-control" type=file name=file2>
+                <br>
+                Image 3: <input class="form-control" type=file name=file3>
+                <br>
+                <input class="form-control" type=submit value=Upload>
+            </form>
+            {% endif %}
+        </div>
+
+</div>
+
+{% endblock %}

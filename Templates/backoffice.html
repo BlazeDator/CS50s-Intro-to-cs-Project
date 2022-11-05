@@ -1,0 +1,188 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    BackOffice
+{% endblock %}
+
+{% block body %}
+    {{ request.args.get("error", "") }}
+    <div class="bline">
+    <a href="/backoffice/pricestock" class="link btn" style="padding:10px;">For managing stock and prices</a>
+    <a href="/backoffice/deleteitems" class="link btn" style="padding:10px;">For Deleting items</a>
+    <a href="/backoffice/images" class="link btn" style="padding:10px;">For Adding images to items</a>
+    </div>
+    <hr>
+    <div class="bline">
+            <!-- Brands -->
+            <div>
+            <h3>Brand - Add one</h3>
+            <table class="table">
+            <form action="/backoffice/brands" method="post">
+                <tr>
+                <td><input class="form-control" type="text" name="newbrand" placeholder="New Brand" autocomplete="off" required></td>
+                <td><input class="form-control" type="submit" value="Add"></td>
+                </tr>
+            </form>
+
+                {% for row in brands%}
+                <tr>
+                    <form action="/backoffice/brands" method="get">
+
+                        <td>{{ row["name"] }}</td>
+                        <input type="hidden" name="id" value='{{ row["id"] }}'>
+                        <td><input class="form-control" type="submit" value="Delete"></td>
+
+                    </form>
+                </tr>
+                {% endfor%}
+            </table>
+            </div>
+            <!-- EndBrand -->
+            <!-- Categories -->
+            <div>
+            <h3>Categories - Add one</h3>
+            <table class="table">
+            <form action="/backoffice/categories" method="post">
+                <tr>
+                <td><input class="form-control" type="text" name="newcategory" placeholder="New Category" autocomplete="off" required></td>
+                <td><input class="form-control" type="submit" value="Add"></td>
+                </tr>
+            </form>
+            <tr></tr>
+                {% for row in categories%}
+                <form action="/backoffice/categories" method="get">
+                    <tr>
+                        <td>{{ row["name"] }}</td>
+                        <input type="hidden" name="id" value='{{ row["id"] }}'>
+                        <td><input class="form-control" type="submit" value="Delete"></td>
+                    </tr>
+                </form>
+                {% endfor%}
+            </table>
+            </div>
+            <!-- EndCategory -->
+            <div>
+            <!-- Category Selector -->
+            <div style="text-align:center;">
+                <h3>Select Category First</h3>
+                <h5>Add Specs/Add items</h5>
+                <form action="/backoffice" method="get" style="text-align:center;">
+                {% for cat in categories %}
+                {% if cat["id"] == request.args.get("itemcat")|int %}
+                    Active: {{ cat["name"] }}
+                {% endif %}
+                {% endfor%}
+                <select class="form-control" name="itemcat">
+                    <option selected disabled>Select Category</option>
+                    {% for row in categories %}
+                    <option value='{{ row["id"] }}'>{{ row["name"] }}</option>
+
+                    {% endfor%}
+                </select>
+                <br>
+                <input class="form-control" type="submit" value="Select">
+                </form>
+            </div>
+            <!-- EndCat Selector -->
+            <hr>
+            {% if request.args.get("itemcat") %}
+            <div class="bline">
+            <!-- Specs -->
+            <div>
+                <h3>Specs - Add one</h3>
+                <table class="table">
+                <form action="/backoffice/specs" method="post">
+                    <tr>
+                        <td>
+                            <select class="form-control" name="catid">
+                                <option selected value="{{request.args.get('itemcat')|int}}">
+                                    {% for cat in categories %}
+                                    {% if cat["id"] == request.args.get("itemcat")|int %}
+                                        {{ cat["name"] }}
+                                    {% endif %}
+                                    {% endfor%}
+                                </option>
+                            </select>
+                        </td>
+                        <td>
+                        <input class="form-control" type="text" name="newspec" placeholder="New Specification" autocomplete="off" required>
+                        </td>
+                    <td><input class="form-control" type="submit" value="Add"></td>
+                </tr>
+                </form>
+                    {% for row in specs %}
+                        {% if row["category_id"] == request.args.get("itemcat")|int %}
+                            <form action="/backoffice/specs" method="get">
+                                    <tr>
+                                        <td>
+                                            {% for cat in categories %}
+                                                {% if cat["id"] == row["category_id"] %}
+                                                    Category: {{ cat["name"] }}
+                                                {% endif %}
+                                            {% endfor%}
+                                        </td>
+                                        <td>
+                                            Spec: {{ row["name"] }}
+                                        </td>
+                                    <input type="hidden" name="id" value='{{ row["id"] }}'>
+                                    <input type="hidden" name="catid" value='{{ row["category_id"] }}'>
+                                    <td><input class="form-control" type="submit" value="Delete"></td>
+                                    </tr>
+                                </form>
+                        {% endif %}
+                    {% endfor%}
+                </table>
+            </div>
+            <!-- EndSpecs -->
+            <!-- Items -->
+            <div>
+            <h4 style="text-align:center;">Items - Add one</h4>
+            <form action="/backoffice/items" method="post">
+                    <div class="bline">
+                        <div>
+                        Info:
+                        <input class="form-control" type="text" name="name" placeholder="Name" autocomplete="off" required>
+                        <br>
+                        <input class="form-control" type="number" name="price" placeholder="Price" autocomplete="off" required>
+                        <br>
+                        <input class="form-control" type="number" name="stock" placeholder="Stock" autocomplete="off" required>
+                        <br>
+                        <select class="form-control" name="brand">
+                            <option selected disabled>Brand</option>
+                        {% for row in brands %}
+                            <option value='{{ row["id"] }}'>{{ row["name"] }}</option>
+                        {% endfor%}
+                        </select>
+                        <br>
+                        {% for cat in categories %}
+                        {% if cat["id"] == request.args.get("itemcat")|int %}
+                            Category: {{ cat["name"] }}
+                        {% endif %}
+                        {% endfor%}
+                        <br>
+                        <input type="number" name="category" value='{{ request.args.get("itemcat") }}' hidden>
+                        <textarea class="form-control" name="description" placeholder="Description"></textarea>
+
+                        </div>
+                        <div>
+                        Specs:
+                        {% if catspecs %}
+                            {% for row in catspecs %}
+                                <input class="form-control" type="text" name="spec{{row['id']}}"  autocomplete="off" value ='{{row["name"]}}=' required>
+                                <br>
+                            {% endfor%}
+                        {% endif %}
+                        <br>
+                        <input class="form-control" type="submit" value="Add">
+                        </div>
+                    </div>
+            </form>
+            </div>
+            <!-- EndItems -->
+            </div>
+            {% endif %}
+            </div>
+        </div>
+
+
+{% endblock %}

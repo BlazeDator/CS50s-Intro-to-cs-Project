@@ -1,0 +1,48 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Cart
+{% endblock %}
+
+{% block body %}
+    {% if items %}
+    <div>
+        <table class="table-responsive" width="100%">
+        {% for item in items %}
+            <tr class="cart">
+                <td rowspan="3" >
+                    <a href='/item?{{ item ["name"] }}&id={{ item ["id"] }}'><img class="img-thumbnail" src='static/prodimgs/{{ item ["id"] }}-img1.png' alt="Image Unavailable"></a>
+                </td>
+                <td>Product: <a href='/item?{{ item ["name"] }}&id={{ item ["id"] }}' class="storelink">{{ item["name"] }}</a></td>
+
+            </tr>
+            <tr class="cart">
+                <td>Quantity: {{ session[item["id"]|string] }}</td>
+                <form method="post" action="/cart/quantity">
+                <input type="number" name=itemid value='{{ item ["id"] }}' hidden>
+                <td><button class="form-control" name="button" value="+">+</button> </td>
+                </form>
+
+                <form method="post" action="/cart/quantity">
+                <input type="number" name=itemid value='{{ item ["id"] }}' hidden>
+                <td><button class="form-control" name="button" value="-">-</button> </td>
+                </form>
+
+            </tr>
+            <tr>
+                <td>Price: {{ item["price"] }}€</td>
+            </tr>
+            <tr height="1px" width="100%" style="background-color:black;"><td colspan="5"></td></tr>
+        {% endfor %}
+        <tr>
+            <td colspan="4"></td>
+            <td>
+                <h5>Total: </h5>{{totalprice}}€
+            </td>
+        </tr>
+    </table>
+    </div>
+    {% else %}
+        Try adding items to your cart
+    {% endif%}
+{% endblock %}

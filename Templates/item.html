@@ -1,0 +1,55 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    {{ item["name"] }}
+{% endblock %}
+
+{% block body %}
+    <div class="item">
+        <table class="table-responsive">
+        <tr >
+            <td colspan="3"><h2> {{ item["name"] }} </h2></td>
+        </tr>
+        <tr>
+        <td>
+        <img class="img-thumbnail item" src='static/prodimgs/{{ item ["id"] }}-img1.png' onerror="this.style.display='none'" alt="Image Unavailable">
+        </td>
+        <td>
+        <img class="img-thumbnail item" src='static/prodimgs/{{ item ["id"] }}-img2.png' onerror="this.style.display='none'" alt="Image Unavailable">
+        </td>
+        <td>
+        <img class="img-thumbnail item" src='static/prodimgs/{{ item ["id"] }}-img3.png' onerror="this.style.display='none'" alt="Image Unavailable">
+        </td>
+        </tr>
+        <tr>
+            <td colspan="3">
+                {{ item["description"] }}
+            </td>
+        </tr>
+        {% for spec in specs %}
+        <tr>
+            <td colspan="3">
+            <b>{{ spec }} = {{ specs[spec] }}</b>
+            </td>
+        </tr>
+        {% endfor%}
+        <form action="/cart" method="post">
+        <input type="number" name="id" hidden value='{{ item["id"] }}'>
+        <tr>
+            <div style="display:flex;">
+                {% if item["stock"] < 1 %}
+                <td style="min-width:32vw;"><b>Price: </b> {{ item["price"] }}€
+                <input type="submit" class="btn btn-primary" value="Out of stock" disabled>
+                {% else %}
+                <td style="min-width:32vw;"><b>Price: </b> {{ item["price"] }}€
+                <input style="margin-left:25px;" type="submit" class="btn btn-primary" value="Add to cart"></td>
+                {% endif %}
+
+                <td style="min-width:32vw;"></td>
+                <td style="min-width:32vw;"></td>
+            </div>
+        </tr>
+        </form>
+        </table>
+    </div>
+{% endblock %}

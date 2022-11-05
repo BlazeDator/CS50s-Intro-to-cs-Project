@@ -1,0 +1,73 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    BackOffice - Prices/Stocks
+{% endblock %}
+
+{% block body %}
+    {{ request.args.get("error", "") }}
+    <div class="bline"><a href="/backoffice" class="link btn" style="padding:10px;">Back to main BackOffice page</a></div>
+    <hr>
+    <div class="bline">
+        <div>
+            <h4>Select an item to edit stock and/or price:</h4>
+            <table class="table-responsive">
+            {% for item in items %}
+                <form action="/backoffice/pricestock" method="get">
+                    <tr>
+                        <td>Name: {{ item["name"] }}</td>
+                        <input type="number" name=itemid value='{{ item["id"] }}' hidden>
+                        <td><input class="form-control" type=submit value=Select></td>
+                    </tr>
+                </form>
+            {% endfor %}
+            </table>
+        </div>
+        <div>
+            <h4>Edit stock and/or price:</h4>
+            {% if request.args.get("itemid") %}
+            <table class="table-responsive">
+                <form action="/backoffice/pricestock" method="POST">
+                    <tr>
+                        <td colspan="2">Name: {{ current["name"] }}</td>
+                    </tr>
+                        <input type="number" name=itemid value='{{  current["id"] }}' hidden>
+                    <tr height="1px" width="100%" style="background-color:black;"><td colspan="2"></td></tr>
+                    <tr>
+                        <td>
+                            Current Stock: {{ current["stock"] }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            New Stock:
+                        </td>
+                        <td>
+                            <input class="form-control" type="number" min="0" name="stock" value='{{ current["stock"] }}'>
+                        </td>
+                    </tr>
+                    <tr height="1px" width="100%" style="background-color:black;"><td colspan="2"></td></tr>
+                    <tr>
+                        <td>
+                            Current Price: {{ current["price"] }}€
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            New Price:
+                        </td>
+                        <td>
+                            <input class="form-control" type="number" min="0" name="price" value='{{ current["price"] }}'>
+                        </td>
+                    </tr>
+                    <tr height="1px" width="100%" style="background-color:black;"><td colspan="2"></td></tr>
+                    <tr>
+                        <td></td>
+                        <td><input class="form-control" type=submit value=Edit></td>
+                    </tr>
+                </form>
+            </table>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

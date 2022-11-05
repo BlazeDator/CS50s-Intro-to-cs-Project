@@ -1,0 +1,21 @@
+{% if items %}
+    {% for item in items %}
+        <div class="card" style="width: 18rem;">
+            <div style="height:60%;">
+                <a href='/item?{{ item ["name"] }}&id={{ item ["id"] }}'><img src='static/prodimgs/{{ item ["id"] }}-img1.png' class="card-img-top" alt="Image Unavailable" ></a>
+            </div>
+            <div class="card-body">
+                <a href='/item?{{ item ["name"] }}&id={{ item ["id"] }}' class="storelink"><h5 class="card-title">{{ item["name"] }}</h5></a>
+                <form action="/cart" method="post">
+                    <input type="number" name="id" hidden value='{{ item["id"] }}'>
+                    {% if item["stock"] < 1 %}
+                        <div class="storeprice"><div>{{ item["price"] }}€ </div><input type="submit" class="btn btn-primary" value="Out of stock" disabled></div>
+                    {% else %}
+                        <div class="storeprice"><div>{{ item["price"] }}€ </div><input type="submit" class="btn btn-primary" value="Add to cart"></div>
+                    {% endif %}
+                </form>
+            </div>
+        </div>
+        <br>
+    {% endfor %}
+{% endif %}
